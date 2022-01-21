@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<head>
+<!--?php
+ header("Access-Control-Allow-Origin: *");
+?-->
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    
+    <script>  
+       
+
+        function initColorPicker() {
+            var canvasEl = document.getElementById("colorCanvas");
+            var canvasContext = canvasEl.getContext("2d");
+
+            var image = new Image(250, 250);
+            image.crossOrigin = "Anonymous";
+            image.onload = () => canvasContext.drawImage(image, 0, 0, image.width, image.height);
+            image.src = "https://raw.githubusercontent.com/BenjaminFlatz/colorrize/master/app/src/main/res/drawable-v24/palette.png";
+
+            canvasEl.addEventListener("click", function(mouseEvent) {
+                var imgData = canvasContext.getImageData(mouseEvent.offsetX, mouseEvent.offsetY, 1, 1);
+                var rgba = imgData.data;
+                console.log(rgba);
+                postColor(rgba);
+                //alert("rgba(" + rgba[0] + ", " + rgba[1] + ", " + rgba[2] + ", " + rgba[3] + ")");
+            })
+        }
+
+        function postColor(rgba) {
+            var xhr = new XMLHttpRequest();
+            
+            var url = "http://localhost/rgb";
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Access-Control-Allow-Headers", "*");
+            xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var json = JSON.parse(xhr.responseText);
+                    console.log(json.r + ", " + json.g + ", " + json.g);
+                }
+            };
+            var data = JSON.stringify({"r": rgba[0], "g": rgba[1], "b": rgba[2]});
+            xhr.send(data);
+        }
+    </script>
+
+</head>
+
+<body>
+    <header class="container">
+        <h1>Colorrize</h1>
+    </header>
+
+    <div class="container">
+        <canvas id="colorCanvas" class="color-canvas" width="250" height="250"></canvas>
+        <!--div class="btn open-picker">
+            <h1>Hey</h1>
+        </div-->
+    </div>
+
+</body>
+<script>initColorPicker()</script>
+
+</html>

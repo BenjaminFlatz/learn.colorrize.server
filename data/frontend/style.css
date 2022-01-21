@@ -1,0 +1,31 @@
+header {
+    border-bottom: 2px solid black;
+    transition: 1s;
+    margin: auto;
+    display: flex;
+}
+
+h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 300;
+}
+
+.container {
+    margin: 10%;
+    justify-content: center;
+    text-align: center;
+}
+
+.btn {
+    border: 2px solid white;
+    transition: 1s;
+    margin: auto;
+}
+
+.btn:hover {
+    border: 2px solid black;
+}
+
+.color-canvas {
+    border-radius: 50%
+}

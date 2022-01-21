@@ -1,11 +1,11 @@
 #include "ESP8266WiFi.h"
-#include "ESP8266WebServer.h"
+#include <ESPAsyncWebServer.h>
 #include "Adafruit_NeoPixel.h"
 
 const char *ssid = "A1_D55B7B_2.4G";
+const char *password = "DKezsFKhucQkPA";
 
-
-ESP8266WebServer server(80);
+AsyncWebServer server(80);
 String header;
 
 void scan_wifi()
@@ -58,24 +58,10 @@ bool connect_wifi()
   return true;
 }
 
-void handleBody()
-{ //curl -i -X POST -H 'Content-Type: application/json' -d '{"r":"1","g":"2","b":"3"}' http://10.0.0.17/rgb
-
-  Serial.println("handle");
-
-  if (server.hasArg("json") == false)
-  { //Check if body received
-
-    server.send(200, "text/plain", "Body not received");
-    return;
-  }
-
-  String message = "Body received:\n";
-  message += server.arg("plain");
-  message += "\n";
-
-  server.send(200, "text/plain", message);
-  Serial.println(message);
+String handleColor(const String &rgb)
+{
+  Serial.println(rgb);
+  return rgb;
 }
 
 void setup()
@@ -87,13 +73,35 @@ void setup()
   connect_wifi();
   delay(100);
   Serial.println("Setup done");
-  
-  server.on("/rgb", handleBody);
+
+  // Initialize SPIFFS
+  if (!SPIFFS.begin())
+  {
+    Serial.println("An Error has occurred while mounting SPIFFS");
+    return;
+  }
+
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+              AsyncWebServerResponse *response = request->beginResponse(200, "text/plain", "Ok");
+              response->addHeader("Access-Control-Allow-Origin", "*");
+              request->send(SPIFFS, "/frontend/index.html", "text/html");
+            });
+
+  // Route to load style.css file
+  server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request)
+            { request->send(SPIFFS, "/frontend/style.css", "text/css"); });
+
+  server.on("/rgb", HTTP_POST, [](AsyncWebServerRequest *request)
+            {
+              AsyncWebServerResponse *response = request->beginResponse(200, "text/plain", "Ok");
+              response->addHeader("Access-Control-Allow-Origin", "*");
+              request->send(SPIFFS, "/frontend/index.html", String(), false, handleColor);
+            });
+
   server.begin();
-  Serial.println("Server listening");
 }
 
 void loop()
 {
-  server.handleClient();
 }
