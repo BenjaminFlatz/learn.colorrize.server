@@ -83,8 +83,6 @@ void setup()
 
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
             {
-              AsyncWebServerResponse *response = request->beginResponse(200, "text/plain", "Ok");
-              response->addHeader("Access-Control-Allow-Origin", "*");
               request->send(SPIFFS, "/frontend/index.html", "text/html");
             });
 
@@ -94,11 +92,9 @@ void setup()
 
   server.on("/rgb", HTTP_POST, [](AsyncWebServerRequest *request)
             {
-              AsyncWebServerResponse *response = request->beginResponse(200, "text/plain", "Ok");
-              response->addHeader("Access-Control-Allow-Origin", "*");
               request->send(SPIFFS, "/frontend/index.html", String(), false, handleColor);
             });
-
+  DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
   server.begin();
 }
 
