@@ -2,11 +2,25 @@
 #include <ESPAsyncWebServer.h>
 #include "Adafruit_NeoPixel.h"
 
+#define LED_PIN 14
+#define NUM_PIXELS 25
+
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUM_PIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
+
 const char *ssid = "A1_D55B7B_2.4G";
-const char *password = "DKezsFKhucQkPA";
+const char *password = "";
 
 AsyncWebServer server(80);
 String header;
+
+enum ColorMode
+{
+  off = 0,
+  rgb = 1,
+  tw = 2,
+};
+
+ColorMode mode = ColorMode::rgb;
 
 void scan_wifi()
 {
@@ -58,22 +72,45 @@ bool connect_wifi()
   return true;
 }
 
-String handleColor(const String &rgb)
+bool handle_color(int red, int green, int blue, ColorMode mode)
 {
-  Serial.println(rgb);
-  return rgb;
+
+  Serial.println("r="+String(red)+" g="+ String(green)+" b="+String(blue));
+
+  uint32_t colorRgb = pixels.Color(red, green, blue);
+  uint32_t colorWarm = pixels.Color(red, red, red);
+  uint32_t colorCool = pixels.Color(blue, blue, blue);
+
+  if (mode == ColorMode::rgb)
+  {
+    pixels.fill(colorRgb, 0, NUM_PIXELS);
+    pixels.show();
+    return true;
+  }
+
+  else if (mode == ColorMode::tw)
+  {
+    int i = 0;
+    for (i = 0; i < NUM_PIXELS; i++)
+    {
+      if (i % 2 == 0)
+      { //Warmweiß
+        pixels.setPixelColor(i, colorWarm);
+      }
+      else if (i % 2 == 1)
+      {
+        pixels.setPixelColor(i, colorCool);
+      }
+    }
+    pixels.show();
+    return true;
+  }
+
+  return false;
 }
 
-void setup()
+void setup_webserver()
 {
-  Serial.begin(115200);
-
-  // Set WiFi to station mode and disconnect from an AP if it was previously connected
-  scan_wifi();
-  connect_wifi();
-  delay(100);
-  Serial.println("Setup done");
-
   // Initialize SPIFFS
   if (!SPIFFS.begin())
   {
@@ -82,20 +119,44 @@ void setup()
   }
 
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
-            {
-              request->send(SPIFFS, "/frontend/index.html", "text/html");
-            });
+            { request->send(SPIFFS, "/frontend/index.html", "text/html"); });
 
   // Route to load style.css file
   server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request)
             { request->send(SPIFFS, "/frontend/style.css", "text/css"); });
 
-  server.on("/rgb", HTTP_POST, [](AsyncWebServerRequest *request)
+  server.on("/rgb", HTTP_GET, [](AsyncWebServerRequest *request)
             {
-              request->send(SPIFFS, "/frontend/index.html", String(), false, handleColor);
+              request->send(200, "text/plain", "SUCCESS");
+              if (request->hasParam("r") && request->hasParam("g") && request->hasParam("b"))
+              {
+                int r = request->getParam("r")->value().toInt();
+                int g = request->getParam("g")->value().toInt();
+                int b = request->getParam("b")->value().toInt();
+
+                handle_color(r, g, b, ColorMode::rgb);
+              }
             });
-  DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
+
+  DefaultHeaders::Instance().addHeader(F("Access-Control-Allow-Origin"), F("*"));
+  DefaultHeaders::Instance().addHeader(F("Access-Control-Allow-Headers"), F("content-type"));
+
   server.begin();
+}
+
+void setup()
+{
+  Serial.begin(115200);
+
+  scan_wifi();
+  connect_wifi();
+  setup_webserver();
+  pixels.begin();
+
+  delay(100);
+  Serial.println("Setup done");
+
+  handle_color(200, 0, 100, ColorMode::tw);
 }
 
 void loop()

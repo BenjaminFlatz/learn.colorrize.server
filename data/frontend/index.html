@@ -9,13 +9,12 @@
 
     
     <script>  
-       
 
         function initColorPicker() {
             var canvasEl = document.getElementById("colorCanvas");
             var canvasContext = canvasEl.getContext("2d");
 
-            var image = new Image(250, 250);
+            var image = new Image(500, 500);
             image.crossOrigin = "Anonymous";
             image.onload = () => canvasContext.drawImage(image, 0, 0, image.width, image.height);
             image.src = "https://raw.githubusercontent.com/BenjaminFlatz/colorrize/678bef9eb1624ed4037b70dd104686fe65333b27/app/src/main/res/drawable-v24/palette.png";
@@ -31,20 +30,13 @@
 
         function postColor(rgba) {
             var xhr = new XMLHttpRequest();
-            
-            var url = "http://localhost/rgb";
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Access-Control-Allow-Headers", "*");
-            xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var json = JSON.parse(xhr.responseText);
-                    console.log(json.r + ", " + json.g + ", " + json.g);
-                }
-            };
-            var data = JSON.stringify({"r": rgba[0], "g": rgba[1], "b": rgba[2]});
-            xhr.send(data);
+            var url = "rgb";
+            var params = "r="+rgba[0]+"&g="+rgba[1]+"&b="+rgba[2];
+
+            xhr.open("GET", url+"?"+params, true);
+        
+            xhr.send(null);
+            return xhr.responseText;
         }
     </script>
 
@@ -58,7 +50,7 @@
             <h1>Colorrize</h1>
             <hr>
       
-        <canvas id="colorCanvas" class="color-canvas" width="250" height="250"></canvas>
+        <canvas id="colorCanvas" class="color-canvas" width="500" height="500"></canvas>
         <!--div class="btn open-picker">
             <h1>Hey</h1>
         </div-->

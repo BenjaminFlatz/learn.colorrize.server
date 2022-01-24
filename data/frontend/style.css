@@ -1,10 +1,10 @@
 html,
 body {
-  height: 100%;
+  height: auto;
 }
 
 body {
-  overflow: hidden;
+  overflow: auto;
 }
 header {
     border-bottom: 2px solid black;
@@ -37,7 +37,5 @@ h1 {
 
 .color-canvas {
     margin-top: 5%;
-    border-radius: 50%;
-    width: 60%;
-    height: 60%;
+
 }
