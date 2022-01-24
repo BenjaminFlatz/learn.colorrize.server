@@ -7,35 +7,66 @@ body {
   overflow: auto;
 }
 header {
-    border-bottom: 2px solid black;
-    transition: 1s;
-    margin: auto;
-    display: flex;
+  border-bottom: 2px solid black;
+  transition: 1s;
+  margin: auto;
+  display: flex;
 }
 
 h1 {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 300;
-    font-size: xx-large;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: xx-large;
 }
 
 .container {
-    margin: 5%;
-    justify-content: center;
-    text-align: center;
+  margin: 5%;
+  justify-content: center;
+  text-align: center;
 }
 
 .btn {
-    border: 2px solid white;
-    transition: 1s;
-    margin: auto;
+  margin-left: 20%;
+  margin-right: 20%;
+  border: 2px solid white;
+  transition: 1s;
 }
 
 .btn:hover {
-    border: 2px solid black;
+  border: 2px solid black;
 }
 
 .color-canvas {
-    margin-top: 5%;
+  margin-top: 5%;
+}
+.slider {
+  -webkit-appearance: none;
+  width: 60%;
+  height: 2px;
+  background: grey;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+.slider:hover {
+  opacity: 1;
+}
 
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: white;
+  border: solid black 1px;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: white;
+  border: solid black 2px;
+  cursor: pointer;
 }

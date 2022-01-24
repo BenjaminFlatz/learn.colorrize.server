@@ -23,12 +23,24 @@
                 var imgData = canvasContext.getImageData(mouseEvent.offsetX, mouseEvent.offsetY, 1, 1);
                 var rgba = imgData.data;
                 console.log(rgba);
-                postColor(rgba);
+                updateColor(rgba);
                 //alert("rgba(" + rgba[0] + ", " + rgba[1] + ", " + rgba[2] + ", " + rgba[3] + ")");
             })
         }
+        function updateBrightness(brightness) {
+            console.log(brightness)
 
-        function postColor(rgba) {
+            var xhr = new XMLHttpRequest();
+            var url = "settings";
+            var params = "brightness="+brightness;
+
+            xhr.open("GET", url+"?"+params, true);
+        
+            xhr.send(null);
+            return xhr.responseText;
+        }
+
+        function updateColor(rgba) {
             var xhr = new XMLHttpRequest();
             var url = "rgb";
             var params = "r="+rgba[0]+"&g="+rgba[1]+"&b="+rgba[2];
@@ -43,18 +55,24 @@
 </head>
 
 <body>
-   
+    <header class="container">
+        <h1>Colorrize</h1>
+    </header>
 
     <div class="container">
-       
-            <h1>Colorrize</h1>
-            <hr>
-      
+        <div class="container">
         <canvas id="colorCanvas" class="color-canvas" width="500" height="500"></canvas>
-        <!--div class="btn open-picker">
-            <h1>Hey</h1>
-        </div-->
+        </div>
+        <div class="container">
+            <input type="range" min="0" max="255" value="100" class="slider" id="brightness" onchange="updateBrightness(this.value)">
+        </div>
+        <div class="container button">
+            <div class="btn">
+                <h1>RGB</h1>
+            </div>
+        </div>
     </div>
+   
 
 </body>
 <script>initColorPicker()</script>

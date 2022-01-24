@@ -20,6 +20,13 @@ enum ColorMode
   tw = 2,
 };
 
+int red = 100;
+int green = 100;
+int blue = 100;
+int white;
+
+
+
 ColorMode mode = ColorMode::rgb;
 
 void scan_wifi()
@@ -72,10 +79,10 @@ bool connect_wifi()
   return true;
 }
 
-bool handle_color(int red, int green, int blue, ColorMode mode)
+bool handle_color(int red, int green, int blue, ColorMode mode = mode)
 {
 
-  Serial.println("r="+String(red)+" g="+ String(green)+" b="+String(blue));
+  Serial.println("r=" + String(red) + " g=" + String(green) + " b=" + String(blue));
 
   uint32_t colorRgb = pixels.Color(red, green, blue);
   uint32_t colorWarm = pixels.Color(red, red, red);
@@ -109,6 +116,13 @@ bool handle_color(int red, int green, int blue, ColorMode mode)
   return false;
 }
 
+void handle_settings(int brightness)
+{
+  Serial.println("brightness="+String(brightness));
+  pixels.setBrightness(brightness);
+  handle_color(red, green, blue);
+  pixels.show();
+}
 void setup_webserver()
 {
   // Initialize SPIFFS
@@ -134,7 +148,20 @@ void setup_webserver()
                 int g = request->getParam("g")->value().toInt();
                 int b = request->getParam("b")->value().toInt();
 
-                handle_color(r, g, b, ColorMode::rgb);
+                red = r;
+                green = g;
+                blue = b;
+
+                handle_color(red, green, blue, ColorMode::rgb);
+              }
+            });
+  server.on("/settings", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+              request->send(200, "text/plain", "SUCCESS");
+              if (request->hasParam("brightness"))
+              {
+                int brightness = request->getParam("brightness")->value().toInt();
+                handle_settings(brightness);
               }
             });
 
@@ -156,7 +183,7 @@ void setup()
   delay(100);
   Serial.println("Setup done");
 
-  handle_color(200, 0, 100, ColorMode::tw);
+  handle_color(red, green, blue, mode);
 }
 
 void loop()
