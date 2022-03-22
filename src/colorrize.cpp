@@ -3,7 +3,7 @@
 #include "Adafruit_NeoPixel.h"
 
 #define LED_PIN 14
-#define NUM_PIXELS 25
+#define NUM_PIXELS 150
 
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUM_PIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 

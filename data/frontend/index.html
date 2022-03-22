@@ -1,20 +1,14 @@
 <!DOCTYPE html>
 <head>
-<!--?php
- header("Access-Control-Allow-Origin: *");
-?-->
     <meta charset="utf-8" />
-
     <link rel="stylesheet" type="text/css" href="style.css">
-
     
     <script>  
-
         function initColorPicker() {
             var canvasEl = document.getElementById("colorCanvas");
             var canvasContext = canvasEl.getContext("2d");
 
-            var image = new Image(500, 500);
+            var image = new Image(750, 750);
             image.crossOrigin = "Anonymous";
             image.onload = () => canvasContext.drawImage(image, 0, 0, image.width, image.height);
             image.src = "https://raw.githubusercontent.com/BenjaminFlatz/colorrize/678bef9eb1624ed4037b70dd104686fe65333b27/app/src/main/res/drawable-v24/palette.png";
@@ -50,21 +44,45 @@
             xhr.send(null);
             return xhr.responseText;
         }
+        
+        function updateSliderColors() {
+            var xhr = new XMLHttpRequest();
+            var url = "rgb";
+
+            red = document.getElementById("red-slider").value
+            green = document.getElementById("green-slider").value
+            blue = document.getElementById("blue-slider").value
+
+            var params = "r="+red+"&g="+green+"&b="+blue;
+
+            xhr.open("GET", url+"?"+params, true);
+        
+            xhr.send(null);
+            return xhr.responseText;
+        }  
     </script>
 
 </head>
 
 <body>
-    <header class="container">
-        <h1>Colorrize</h1>
-    </header>
-
     <div class="container">
         <div class="container">
-        <canvas id="colorCanvas" class="color-canvas" width="500" height="500"></canvas>
+        <canvas id="colorCanvas" class="color-canvas" width="750" height="750"></canvas>
         </div>
         <div class="container">
             <input type="range" min="0" max="255" value="100" class="slider" id="brightness" onchange="updateBrightness(this.value)">
+        </div>
+        <div class="container">
+            <div class="row">
+                <input id="red-slider" type="range" min="0" max="255" value="100" class="slider red" id="brightness" onchange="updateSliderColors()">
+            </div>       
+            <div>
+                <input id="green-slider" type="range" min="0" max="255" value="100" class="slider green" id="brightness" onchange="updateSliderColors()">
+            </div>
+            <div>
+                <input id="blue-slider" type="range" min="0" max="255" value="100" class="slider blue" id="brightness" onchange="updateSliderColors()">
+            </div>
+            
         </div>
         <div class="container button">
             <div class="btn">
