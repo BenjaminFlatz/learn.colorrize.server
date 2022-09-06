@@ -1,0 +1,101 @@
+openapi: '3.0.2'
+info:
+  title: API Title
+  version: '1.0'
+servers:
+  - url: https://api.server.test/v1
+    
+paths:
+  /rgb:
+    get:
+      description: 'get current rgb values'
+      parameters: []
+      responses:
+        '200':
+          description: OK
+    post:
+      description: 'set rgb values'
+      parameters: 
+        - in: query
+          name: red
+          schema:
+            type: integer
+          description: red value
+        - in: query
+          name: green
+          schema:
+            type: integer
+          description: green value
+        - in: query
+          name: blue
+          schema:
+            type: integer
+          description: blue value
+
+      responses:
+        '200':
+          description: OK
+  /rgbw:
+    get:
+      description: 'get current rgbw values'
+      parameters: []
+      responses:
+        '200':
+          description: OK
+    post:
+      description: ''
+      parameters: 
+        - in: query
+          name: red
+          schema:
+            type: integer
+          description: red value
+        - in: query
+          name: green
+          schema:
+            type: integer
+          description: green value
+        - in: query
+          name: blue
+          schema:
+            type: integer
+          description: blue value
+        - in: query
+          name: white
+          schema:
+            type: integer
+          description: white value
+      responses:
+        '200':
+          description: OK
+  /hex:
+    get:
+      description: 'get current hex color'
+      parameters: []
+      responses:
+        '200':
+          description: OK
+    post:
+      description: 'set new hex color'
+      parameters:  
+        - in: query
+          name: hex
+          schema:
+            type: string
+          description: hex value
+      responses:
+        '200':
+          description: OK
+  /settings:
+    post:
+      description: 'set overall brightness'
+      parameters:
+        - in: query
+          name: brightness
+          schema:
+            type: integer
+          description: brightness value
+      responses:
+        '200':
+          description: OK
+
