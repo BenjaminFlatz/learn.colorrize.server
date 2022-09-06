@@ -41,7 +41,8 @@ h1 {
   height: fit-content;
 }
 .slider {
-  margin: 20px;
+  margin-top: 5%;
+  margin-bottom: 5%;
   -webkit-appearance: none;
   width: 80%;
   height: 2px;
