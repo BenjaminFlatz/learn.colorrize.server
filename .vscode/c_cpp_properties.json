@@ -8,13 +8,13 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "/home/wrusl/repos/colorrize-server/colorrize-server/include",
-                "/home/wrusl/repos/colorrize-server/colorrize-server/src",
-                "/home/wrusl/repos/colorrize-server/colorrize-server/.pio/libdeps/nodemcuv2/ESPAsyncWebServer-esphome/src",
+                "/home/wrusl/repos/colorrize-server/include",
+                "/home/wrusl/repos/colorrize-server/src",
+                "/home/wrusl/repos/colorrize-server/.pio/libdeps/nodemcuv2/ESPAsyncWebServer-esphome/src",
                 "/home/wrusl/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266WiFi/src",
                 "/home/wrusl/.platformio/packages/framework-arduinoespressif8266/libraries/Hash/src",
-                "/home/wrusl/repos/colorrize-server/colorrize-server/.pio/libdeps/nodemcuv2/ESPAsyncTCP-esphome/src",
-                "/home/wrusl/repos/colorrize-server/colorrize-server/.pio/libdeps/nodemcuv2/Adafruit NeoPixel",
+                "/home/wrusl/repos/colorrize-server/.pio/libdeps/nodemcuv2/ESPAsyncTCP-esphome/src",
+                "/home/wrusl/repos/colorrize-server/.pio/libdeps/nodemcuv2/Adafruit NeoPixel",
                 "/home/wrusl/.platformio/packages/framework-arduinoespressif8266/tools/sdk/include",
                 "/home/wrusl/.platformio/packages/framework-arduinoespressif8266/cores/esp8266",
                 "/home/wrusl/.platformio/packages/toolchain-xtensa/include",
@@ -58,13 +58,13 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "/home/wrusl/repos/colorrize-server/colorrize-server/include",
-                    "/home/wrusl/repos/colorrize-server/colorrize-server/src",
-                    "/home/wrusl/repos/colorrize-server/colorrize-server/.pio/libdeps/nodemcuv2/ESPAsyncWebServer-esphome/src",
+                    "/home/wrusl/repos/colorrize-server/include",
+                    "/home/wrusl/repos/colorrize-server/src",
+                    "/home/wrusl/repos/colorrize-server/.pio/libdeps/nodemcuv2/ESPAsyncWebServer-esphome/src",
                     "/home/wrusl/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266WiFi/src",
                     "/home/wrusl/.platformio/packages/framework-arduinoespressif8266/libraries/Hash/src",
-                    "/home/wrusl/repos/colorrize-server/colorrize-server/.pio/libdeps/nodemcuv2/ESPAsyncTCP-esphome/src",
-                    "/home/wrusl/repos/colorrize-server/colorrize-server/.pio/libdeps/nodemcuv2/Adafruit NeoPixel",
+                    "/home/wrusl/repos/colorrize-server/.pio/libdeps/nodemcuv2/ESPAsyncTCP-esphome/src",
+                    "/home/wrusl/repos/colorrize-server/.pio/libdeps/nodemcuv2/Adafruit NeoPixel",
                     "/home/wrusl/.platformio/packages/framework-arduinoespressif8266/tools/sdk/include",
                     "/home/wrusl/.platformio/packages/framework-arduinoespressif8266/cores/esp8266",
                     "/home/wrusl/.platformio/packages/toolchain-xtensa/include",
@@ -107,7 +107,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=50204",
+                "PLATFORMIO=60104",
                 "ESP8266",
                 "ARDUINO_ARCH_ESP8266",
                 "ARDUINO_ESP8266_NODEMCU_ESP12E",
