@@ -3,12 +3,12 @@
 #include "Adafruit_NeoPixel.h"
 
 #define LED_PIN 14
-#define NUM_PIXELS 150
+#define NUM_PIXELS 25
 
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUM_PIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 const char *ssid = "A1_D55B7B_2.4G";
-const char *password = "";
+const char *password = "DKezsFKhucQkPA";
 
 AsyncWebServer server(80);
 String header;
@@ -141,7 +141,6 @@ void setup_webserver()
 
   server.on("/rgb", HTTP_GET, [](AsyncWebServerRequest *request)
             {
-              request->send(200, "text/plain", "SUCCESS");
               if (request->hasParam("r") && request->hasParam("g") && request->hasParam("b"))
               {
                 int r = request->getParam("r")->value().toInt();
@@ -154,6 +153,7 @@ void setup_webserver()
 
                 handle_color(red, green, blue, ColorMode::rgb);
               }
+              request->send(200, "text/json", "{r:"+String(red)+", g:"+String(green)+", b:"+String(blue)+"}");
             });
   server.on("/settings", HTTP_GET, [](AsyncWebServerRequest *request)
             {

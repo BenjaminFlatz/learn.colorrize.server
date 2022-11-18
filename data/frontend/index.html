@@ -59,7 +59,58 @@
         
             xhr.send(null);
             return xhr.responseText;
-        }  
+        }
+
+        function on(){
+            var xhr = new XMLHttpRequest();
+            var url = "rgb";
+            var params = "r="+100+"&g="+100+"&b="+100;
+
+            xhr.open("GET", url+"?"+params, true);
+        
+            xhr.send(null);
+            return xhr.responseText;
+        }
+
+
+        function off(){
+            var xhr = new XMLHttpRequest();
+            var url = "rgb";
+            var params = "r="+0+"&g="+0+"&b="+0;
+
+            xhr.open("GET", url+"?"+params, true);
+        
+            xhr.send(null);
+            return xhr.responseText;
+        }
+
+        function toogleOnOff() {
+            var req = new XMLHttpRequest();
+            var url = "rgb";
+
+            req.responseType = 'json';
+            req.open("GET", url, true);
+            req.onload  = function() {
+                var red = JSONParse(req.responseText).r;
+                var green = JSONParse(req.responseText).g;
+                var blue = JSONParse(req.responseText).b;
+            
+
+                // do something with jsonResponse
+            };
+            req.send(null);
+            
+            if(red == 0 || green == 0 || blue == 0)
+            {
+                on();
+            }
+            else
+            {
+                off();
+            }
+        }
+
+
     </script>
 
 </head>
@@ -76,23 +127,21 @@
             <div class="row">
                 <input id="red-slider" type="range" min="0" max="255" value="100" class="slider red" id="brightness" onchange="updateSliderColors()">
             </div>       
-            <div>
+            <div class="row">
                 <input id="green-slider" type="range" min="0" max="255" value="100" class="slider green" id="brightness" onchange="updateSliderColors()">
             </div>
-            <div>
+            <div class="row">
                 <input id="blue-slider" type="range" min="0" max="255" value="100" class="slider blue" id="brightness" onchange="updateSliderColors()">
             </div>
             
         </div>
         <div class="container button">
-            <div class="btn">
-                <h1>RGB</h1>
+            <div class="btn" onclick="toogleOnOff()">
+                <h1>O</h1>
             </div>
         </div>
     </div>
-   
-
-</body>
+   </body>
 <script>initColorPicker()</script>
 
 </html>

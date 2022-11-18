@@ -25,6 +25,11 @@ h1 {
   text-align: center;
 }
 
+.row{
+  margin-bottom: 5%;
+  margin-top: 5%;
+}
+
 .btn {
   margin-left: 20%;
   margin-right: 20%;
