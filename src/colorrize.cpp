@@ -153,7 +153,7 @@ void setup_webserver()
 
                 handle_color(red, green, blue, ColorMode::rgb);
               }
-              request->send(200, "text/json", "{r:"+String(red)+", g:"+String(green)+", b:"+String(blue)+"}");
+              request->send(200, "text/plain", String(red)+","+String(green)+","+String(blue));
             });
   server.on("/settings", HTTP_GET, [](AsyncWebServerRequest *request)
             {

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+
 <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="style.css">
-    
-    <script>  
+
+    <script>
         function initColorPicker() {
             var canvasEl = document.getElementById("colorCanvas");
             var canvasContext = canvasEl.getContext("2d");
@@ -13,7 +14,7 @@
             image.onload = () => canvasContext.drawImage(image, 0, 0, image.width, image.height);
             image.src = "https://raw.githubusercontent.com/BenjaminFlatz/colorrize/678bef9eb1624ed4037b70dd104686fe65333b27/app/src/main/res/drawable-v24/palette.png";
 
-            canvasEl.addEventListener("click", function(mouseEvent) {
+            canvasEl.addEventListener("click", function (mouseEvent) {
                 var imgData = canvasContext.getImageData(mouseEvent.offsetX, mouseEvent.offsetY, 1, 1);
                 var rgba = imgData.data;
                 console.log(rgba);
@@ -26,10 +27,10 @@
 
             var xhr = new XMLHttpRequest();
             var url = "settings";
-            var params = "brightness="+brightness;
+            var params = "brightness=" + brightness;
 
-            xhr.open("GET", url+"?"+params, true);
-        
+            xhr.open("GET", url + "?" + params, true);
+
             xhr.send(null);
             return xhr.responseText;
         }
@@ -37,14 +38,14 @@
         function updateColor(rgba) {
             var xhr = new XMLHttpRequest();
             var url = "rgb";
-            var params = "r="+rgba[0]+"&g="+rgba[1]+"&b="+rgba[2];
+            var params = "r=" + rgba[0] + "&g=" + rgba[1] + "&b=" + rgba[2];
 
-            xhr.open("GET", url+"?"+params, true);
-        
+            xhr.open("GET", url + "?" + params, true);
+
             xhr.send(null);
             return xhr.responseText;
         }
-        
+
         function updateSliderColors() {
             var xhr = new XMLHttpRequest();
             var url = "rgb";
@@ -53,33 +54,37 @@
             green = document.getElementById("green-slider").value
             blue = document.getElementById("blue-slider").value
 
-            var params = "r="+red+"&g="+green+"&b="+blue;
+            var params = "r=" + red + "&g=" + green + "&b=" + blue;
 
-            xhr.open("GET", url+"?"+params, true);
-        
+            xhr.open("GET", url + "?" + params, true);
+
             xhr.send(null);
             return xhr.responseText;
         }
 
-        function on(){
+        function on() {
             var xhr = new XMLHttpRequest();
             var url = "rgb";
-            var params = "r="+100+"&g="+100+"&b="+100;
 
-            xhr.open("GET", url+"?"+params, true);
-        
+            var red = document.getElementById("red-slider").value;
+            var green = document.getElementById("green-slider").value;
+            var blue = document.getElementById("blue-slider").value;
+
+            var params = "r=" + red + "&g=" + green + "&b=" + blue;
+
+            xhr.open("GET", url + "?" + params, true);
             xhr.send(null);
             return xhr.responseText;
         }
 
 
-        function off(){
+        function off() {
             var xhr = new XMLHttpRequest();
             var url = "rgb";
-            var params = "r="+0+"&g="+0+"&b="+0;
+            var params = "r=" + 0 + "&g=" + 0 + "&b=" + 0;
 
-            xhr.open("GET", url+"?"+params, true);
-        
+            xhr.open("GET", url + "?" + params, true);
+
             xhr.send(null);
             return xhr.responseText;
         }
@@ -88,25 +93,20 @@
             var req = new XMLHttpRequest();
             var url = "rgb";
 
-            req.responseType = 'json';
+            req.responseType = 'text';
             req.open("GET", url, true);
-            req.onload  = function() {
-                var red = JSONParse(req.responseText).r;
-                var green = JSONParse(req.responseText).g;
-                var blue = JSONParse(req.responseText).b;
-            
-
-                // do something with jsonResponse
-            };
+            req.onloadend = updateState;
             req.send(null);
-            
-            if(red == 0 || green == 0 || blue == 0)
-            {
-                on();
-            }
-            else
-            {
-                off();
+
+            function updateState() {
+                var rgb = req.responseText.split(",");
+                
+                if (parseInt(rgb[0]) == 0 || parseInt(rgb[0]) == 0 || parseInt(rgb[0]) == 0) {
+                    on();
+                }
+                else {
+                    off();
+                }
             }
         }
 
@@ -118,22 +118,25 @@
 <body>
     <div class="container">
         <div class="container">
-        <canvas id="colorCanvas" class="color-canvas" width="750" height="750"></canvas>
+            <canvas id="colorCanvas" class="color-canvas" width="750" height="750"></canvas>
         </div>
         <div class="container">
-            <input type="range" min="0" max="255" value="100" class="slider" id="brightness" onchange="updateBrightness(this.value)">
+            <input id="brightness" type="range" min="0" max="255" value="100" class="slider" 
+                onchange="updateBrightness(this.value)">
         </div>
         <div class="container">
             <div class="row">
-                <input id="red-slider" type="range" min="0" max="255" value="100" class="slider red" id="brightness" onchange="updateSliderColors()">
-            </div>       
-            <div class="row">
-                <input id="green-slider" type="range" min="0" max="255" value="100" class="slider green" id="brightness" onchange="updateSliderColors()">
+                <input id="red-slider" type="range" min="0" max="255" value="100" class="slider red"
+                    onchange="updateSliderColors()">
             </div>
             <div class="row">
-                <input id="blue-slider" type="range" min="0" max="255" value="100" class="slider blue" id="brightness" onchange="updateSliderColors()">
+                <input id="green-slider" type="range" min="0" max="255" value="100" class="slider green"
+                    onchange="updateSliderColors()">
             </div>
-            
+            <div class="row">
+                <input id="blue-slider" type="range" min="0" max="255" value="100" class="slider blue"
+                    onchange="updateSliderColors()">
+            </div>
         </div>
         <div class="container button">
             <div class="btn" onclick="toogleOnOff()">
@@ -141,7 +144,7 @@
             </div>
         </div>
     </div>
-   </body>
+</body>
 <script>initColorPicker()</script>
 
 </html>
