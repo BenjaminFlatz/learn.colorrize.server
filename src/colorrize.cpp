@@ -3,12 +3,12 @@
 #include "Adafruit_NeoPixel.h"
 
 #define LED_PIN 14
-#define NUM_PIXELS 25
-
+#define NUM_PIXELS 150//25
+s
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUM_PIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
-const char *ssid = "A1_D55B7B_2.4G";
-const char *password = "DKezsFKhucQkPA";
+const char *ssid = "";
+const char *password = "";
 
 AsyncWebServer server(80);
 String header;
