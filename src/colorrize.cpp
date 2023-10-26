@@ -59,7 +59,7 @@ bool connect_wifi()
   return true;
 }
 
-bool handle_color(int red, int green, int blue, ColorMode mode = mode)
+bool handle_color(int red, int green, int blue, ColorMode mode = MODE)
 {
 
   Serial.println("r=" + String(red) + " g=" + String(green) + " b=" + String(blue));
@@ -105,6 +105,47 @@ void handle_settings(int brightness)
   pixels.show();
 }
 
+
+#pragma region "Animations"
+
+void increment_animation()
+{
+  if (ANIMATION == MAX_ANIMATION)
+  {
+    ANIMATION = 0;
+    return;
+  }
+  ANIMATION++;
+}
+
+void rainbow()
+{
+
+  for (long firstPixelHue = 0; firstPixelHue < 5 * 65536; firstPixelHue += 256)
+  {
+    for (int i = 0; i < pixels.numPixels(); i++)
+    {
+      int pixelHue = firstPixelHue + (i * 65536L / pixels.numPixels());
+      pixels.setPixelColor(i, pixels.gamma32(pixels.ColorHSV(pixelHue)));
+    }
+    pixels.show();
+    delay(DELAY);
+  }
+}
+
+void lightning()
+{
+}
+
+void strobe()
+{
+}
+
+#pragma endregion
+
+
+
+
 void setup_webserver()
 {
   // Initialize SPIFFS
@@ -145,38 +186,18 @@ void setup_webserver()
                 handle_settings(brightness);
               } });
 
+  server.on("/animations", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+              request->send(200, "text/plain", "SUCCESS");
+              increment_animation(); 
+              });
+
   DefaultHeaders::Instance().addHeader(F("Access-Control-Allow-Origin"), F("*"));
   DefaultHeaders::Instance().addHeader(F("Access-Control-Allow-Headers"), F("content-type"));
 
   server.begin();
 }
 
-#pragma region "Animations"
-
-void rainbow()
-{
-
-  for (long firstPixelHue = 0; firstPixelHue < 5 * 65536; firstPixelHue += 256)
-  {
-    for (int i = 0; i < pixels.numPixels(); i++)
-    {
-      int pixelHue = firstPixelHue + (i * 65536L / pixels.numPixels());
-      pixels.setPixelColor(i, pixels.gamma32(pixels.ColorHSV(pixelHue)));
-    }
-    pixels.show();
-    delay(10);
-  }
-}
-
-void lightning()
-{
-}
-
-void strobe()
-{
-}
-
-#pragma endregion
 
 void setup()
 {
@@ -190,10 +211,24 @@ void setup()
   delay(100);
   Serial.println("Setup done");
 
-  handle_color(RED, GREEN, BLUE, mode);
+  handle_color(RED, GREEN, BLUE, MODE);
 }
 
 void loop()
 {
-  rainbow();
+
+  switch (ANIMATION)
+  {
+  case 1:
+    rainbow();
+    break;
+  case 2:
+    strobe();
+    break;
+  case 3:
+    lightning();
+    break;
+  default:
+    break;
+  }
 }

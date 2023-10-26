@@ -60,6 +60,16 @@
             xhr.send(null);
             return xhr.responseText;
         }  
+
+        function toggleAnimation() {
+            var xhr = new XMLHttpRequest();
+            var url = "animations";
+
+            xhr.open("GET", url, true);
+        
+            xhr.send(null);
+            return xhr.responseText;
+        }  
     </script>
 
 </head>
@@ -85,8 +95,8 @@
             
         </div>
         <div class="container button">
-            <div class="btn">
-                <h1>RGB</h1>
+            <div class="btn" onclick="toggleAnimation()">
+                <h1>#</h1>
             </div>
         </div>
     </div>

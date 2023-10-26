@@ -1,5 +1,5 @@
-#define LED_PIN 14
-#define NUM_PIXELS 25
+#define LED_PIN 15
+#define NUM_PIXELS 60
 
 
 const char *ssid = "A1_D55B7B_2.4G";
@@ -19,4 +19,8 @@ int BLUE = 50;
 int WHITE;
 int BRIGHTNESS = 50;
 
-ColorMode mode = ColorMode::rgb;
+int ANIMATION = 0;
+int MAX_ANIMATION = 3;
+int DELAY = 10;
+
+ColorMode MODE = ColorMode::rgb;
