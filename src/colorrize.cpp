@@ -201,6 +201,15 @@ void setup_webserver()
               request->send(200, "text/plain", "SUCCESS");
               increment_animation(); });
 
+  server.on("/delay", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+              request->send(200, "text/plain", "SUCCESS");
+              if (request->hasParam("delay"))
+              {
+                DELAY = request->getParam("delay")->value().toInt();
+              } 
+            });
+
   DefaultHeaders::Instance().addHeader(F("Access-Control-Allow-Origin"), F("*"));
   DefaultHeaders::Instance().addHeader(F("Access-Control-Allow-Headers"), F("content-type"));
 
