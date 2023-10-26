@@ -13,9 +13,10 @@ enum ColorMode
   tw = 2,
 };
 
-int red = 50;
-int green = 50;
-int blue = 50;
-int white;
+int RED = 50;
+int GREEN = 50;
+int BLUE = 50;
+int WHITE;
+int BRIGHTNESS = 50;
 
 ColorMode mode = ColorMode::rgb;
