@@ -105,7 +105,6 @@ void handle_settings(int brightness)
   pixels.show();
 }
 
-
 #pragma region "Animations"
 
 void increment_animation()
@@ -133,18 +132,29 @@ void rainbow()
   }
 }
 
-void lightning()
+void laser()
 {
+  uint32_t colorRgb = pixels.Color(RED, GREEN, BLUE);
+  int rayLength = NUM_PIXELS / 10;
+
+  for (int i = 0; i < pixels.numPixels(); i++)
+  {
+    pixels.fill((0,0,0), 0, NUM_PIXELS);
+    for (int ray = 0; ray < rayLength; ray++){
+      pixels.setPixelColor(i+ray, colorRgb);
+    }
+    pixels.show();
+    delay(DELAY);
+  }
+
 }
+
 
 void strobe()
 {
 }
 
 #pragma endregion
-
-
-
 
 void setup_webserver()
 {
@@ -189,15 +199,13 @@ void setup_webserver()
   server.on("/animations", HTTP_GET, [](AsyncWebServerRequest *request)
             {
               request->send(200, "text/plain", "SUCCESS");
-              increment_animation(); 
-              });
+              increment_animation(); });
 
   DefaultHeaders::Instance().addHeader(F("Access-Control-Allow-Origin"), F("*"));
   DefaultHeaders::Instance().addHeader(F("Access-Control-Allow-Headers"), F("content-type"));
 
   server.begin();
 }
-
 
 void setup()
 {
@@ -223,10 +231,10 @@ void loop()
     rainbow();
     break;
   case 2:
-    strobe();
+    laser();
     break;
   case 3:
-    lightning();
+    strobe();
     break;
   default:
     break;

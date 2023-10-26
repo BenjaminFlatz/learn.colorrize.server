@@ -21,6 +21,6 @@ int BRIGHTNESS = 50;
 
 int ANIMATION = 0;
 int MAX_ANIMATION = 3;
-int DELAY = 10;
+int DELAY = 3;
 
 ColorMode MODE = ColorMode::rgb;
