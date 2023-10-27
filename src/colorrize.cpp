@@ -135,14 +135,14 @@ void rainbow()
 void laser()
 {
   uint32_t colorRgb = pixels.Color(RED, GREEN, BLUE);
-  int rayLength = NUM_PIXELS / 10;
+  int rayLength = NUM_PIXELS * RAY_LENGTH_PERCENT /100;
 
-  for (int i = 0; i < pixels.numPixels() + rayLength; i++)
+  for (int i = 0; i < NUM_PIXELS + rayLength; i++)
   {
-    pixels.fill((0,0,0), 0, pixels.numPixels());
+    pixels.fill((0, 0, 0), 0, NUM_PIXELS);
     for (int ray = 0; ray < rayLength; ray++)
     {
-      int index = i + ray-rayLength;
+      int index = i + ray - rayLength;
       if (index >= 0)
         pixels.setPixelColor(index, colorRgb);
     }
@@ -210,6 +210,13 @@ void setup_webserver()
                 DELAY = request->getParam("delay")->value().toInt();
               } });
 
+  server.on("/length", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+              request->send(200, "text/plain", "SUCCESS");
+              if (request->hasParam("length"))
+              {
+                RAY_LENGTH_PERCENT = request->getParam("length")->value().toInt();
+              } });
   DefaultHeaders::Instance().addHeader(F("Access-Control-Allow-Origin"), F("*"));
   DefaultHeaders::Instance().addHeader(F("Access-Control-Allow-Headers"), F("content-type"));
 
@@ -246,7 +253,7 @@ void loop()
     strobe();
     break;
   default:
-  laser();
+    laser();
     break;
   }
 }
