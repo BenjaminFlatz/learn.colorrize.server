@@ -264,7 +264,6 @@ void loop()
     random_colors();
     break;
   default:
-    random_colors();
     break;
   }
 }
