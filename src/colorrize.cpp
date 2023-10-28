@@ -135,7 +135,7 @@ void rainbow()
 void laser()
 {
   uint32_t colorRgb = pixels.Color(RED, GREEN, BLUE);
-  int rayLength = NUM_PIXELS * RAY_LENGTH_PERCENT /100;
+  int rayLength = NUM_PIXELS * RAY_LENGTH_PERCENT / 100;
 
   for (int i = 0; i < NUM_PIXELS + rayLength; i++)
   {
@@ -151,8 +151,19 @@ void laser()
   }
 }
 
-void strobe()
+void random_colors()
 {
+  for (int i = 0; i < NUM_PIXELS; i++)
+  {
+    int red = RED*(rand() % 255)/255;
+    int green = GREEN*(rand() % 255)/255;
+    int blue = BLUE*(rand() % 255)/255;
+
+    uint32_t colorRgb = pixels.Color(red, green, blue);
+    pixels.setPixelColor(i, colorRgb);
+  }
+  pixels.show();
+  delay(DELAY);
 }
 
 #pragma endregion
@@ -250,10 +261,10 @@ void loop()
     laser();
     break;
   case 3:
-    strobe();
+    random_colors();
     break;
   default:
-    laser();
+    random_colors();
     break;
   }
 }

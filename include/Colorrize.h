@@ -1,5 +1,5 @@
 #define LED_PIN 15
-#define NUM_PIXELS 60
+#define NUM_PIXELS 150
 
 
 const char *ssid = "A1_D55B7B_2.4G";
